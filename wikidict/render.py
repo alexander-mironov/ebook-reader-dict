@@ -247,10 +247,18 @@ def _find_pronunciations(
     top_sections: List[wtp.Section], func: Callable[[str], List[str]]
 ) -> List[str]:
     """Find pronunciations."""
+    pronunciation_section = next(filter(lambda x: x.title == "Pronunciation", top_sections[0].sections), None)
     results = []
-    for top_section in top_sections:
-        if result := func(top_section.contents):
-            results.extend(result)
+    if pronunciation_section:
+        strings = pronunciation_section.string.split('\n')
+        for string in strings:
+            if ("RP" in string or "UK" in string) and "dated" not in string:
+                if result := func(string):
+                    results.extend(result)
+    if not results:
+        for top_section in top_sections:
+            if result := func(top_section.contents):
+                results.extend(result)
     return sorted(uniq(results))
 
 
