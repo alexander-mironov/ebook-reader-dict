@@ -252,7 +252,7 @@ def _find_pronunciations(
     if pronunciation_section:
         strings = pronunciation_section.string.split('\n')
         for string in strings:
-            if ("RP" in string or "UK" in string) and "dated" not in string:
+            if ("RP" in string or "UK" in string or "England" in string) and "dated" not in string:
                 if result := func(string):
                     results.extend(result)
     if not results:
